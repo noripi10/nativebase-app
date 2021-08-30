@@ -1,21 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { NativeBaseProvider, extendTheme } from 'native-base';
+import { Router } from './src/navigation/Route';
+import { AppearanceProvider } from 'react-native-appearance';
+
+const config = {
+  useSystemColorMode: true,
+  // initialColorMode: 'dark',
+};
+const theme = extendTheme({ config });
+
+const linearGradientConfig = {
+  dependencies: {
+    // For Expo projects (Bare or managed workflow)
+    'linear-gradient': require('expo-linear-gradient').LinearGradient,
+    // For non expo projects
+    // 'linear-gradient': require('react-native-linear-gradient').default,
+  },
+};
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AppearanceProvider>
+      <NativeBaseProvider theme={theme} config={linearGradientConfig}>
+        <Router />
+      </NativeBaseProvider>
+    </AppearanceProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
