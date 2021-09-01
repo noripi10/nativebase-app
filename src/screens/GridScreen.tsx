@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   Box,
+  Button,
   HStack,
   Input,
   KeyboardAvoidingView,
@@ -23,7 +24,7 @@ type Data = {
   userName: string;
   score: number[];
 };
-const DataList = [
+const DataList: Data[] = [
   { userId: '0002', userName: '杉山', score: [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
   { userId: '0008', userName: '園部', score: [4, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
   { userId: '0012', userName: '角', score: [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
@@ -36,15 +37,16 @@ export const GridScreen: React.FC<Props> = ({ navigation }) => {
   const fc = useColorModeValue('black', 'white');
   const { width, height } = useWindowDimensions();
   const colWidth = (width * 0.98) / 5;
-  const rowHeight = (height * 0.75) / 19;
+  const rowHeight = (height * 0.78) / 19;
 
   const onScoreChange = (userID: string, arrayPlace: number, val: string) => {
     console.log(val, parseInt(val));
-    if (val === '' || parseInt(val) === NaN) val = '0';
+    let newVal = val.toLowerCase();
+    if (!/^\d{1,}$/.test(newVal)) newVal = '0';
     const currentList = dataList.map((data) => {
       if (data.userId === userID) {
         let tempData = data;
-        tempData.score[arrayPlace] = parseInt(val);
+        tempData.score[arrayPlace] = parseInt(newVal);
       }
       return data;
     });
@@ -55,6 +57,13 @@ export const GridScreen: React.FC<Props> = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: 'Group-A スコア表',
+      headerRight: () => (
+        <Button bg='blue.800' px={2}>
+          <Text fontSize={'sm'} color={fc}>
+            データ共有
+          </Text>
+        </Button>
+      ),
     });
   }, [navigation]);
 
@@ -92,6 +101,10 @@ export const GridScreen: React.FC<Props> = ({ navigation }) => {
                     alignItems='center'
                     width={colWidth}
                     height={rowHeight}
+                    borderWidth={StyleSheet.hairlineWidth}
+                    borderLeftWidth={0}
+                    borderBottomWidth={0}
+                    borderColor={bc}
                     bg='teal.500'
                   >
                     <Text color={fc}>{data.userName}</Text>
@@ -99,35 +112,34 @@ export const GridScreen: React.FC<Props> = ({ navigation }) => {
                 ))}
               </HStack>
               <HStack justifyContent='flex-start'>
-                {dataList.map(({ userId, userName, score }) => {
-                  return (
-                    <VStack key={'scoreList-' + userName} justifyContent='flex-start'>
-                      {score.map((val, number) => (
-                        <Box
-                          key={userName + number.toString()}
-                          justifyContent='center'
-                          alignItems='center'
+                {dataList.map(({ userId, userName, score }) => (
+                  <VStack key={'scoreList-' + userName} justifyContent='flex-start'>
+                    {score.map((val, number) => (
+                      <Box
+                        key={userName + number.toString()}
+                        justifyContent='center'
+                        alignItems='center'
+                        width={colWidth}
+                        height={rowHeight}
+                      >
+                        <Input
                           width={colWidth}
                           height={rowHeight}
-                        >
-                          <Input
-                            width={colWidth}
-                            height={rowHeight}
-                            p={1}
-                            textAlign='center'
-                            type='number'
-                            borderWidth={StyleSheet.hairlineWidth}
-                            borderColor={bc}
-                            borderRadius={0}
-                            color={fc}
-                            value={val ? val.toString() : ''}
-                            onChangeText={(text: string) => onScoreChange(userId, number, text)}
-                          />
-                        </Box>
-                      ))}
-                    </VStack>
-                  );
-                })}
+                          p={1}
+                          textAlign='center'
+                          type='number'
+                          borderWidth={StyleSheet.hairlineWidth}
+                          borderLeftWidth={0}
+                          borderColor={bc}
+                          borderRadius={0}
+                          color={fc}
+                          value={val ? val.toString() : ''}
+                          onChangeText={(text: string) => onScoreChange(userId, number, text)}
+                        />
+                      </Box>
+                    ))}
+                  </VStack>
+                ))}
               </HStack>
               <HStack>
                 {dataList.map((data) => (
@@ -137,9 +149,12 @@ export const GridScreen: React.FC<Props> = ({ navigation }) => {
                     alignItems='center'
                     width={colWidth}
                     height={rowHeight}
-                    bg='purple.500'
+                    borderWidth={StyleSheet.hairlineWidth}
+                    borderLeftWidth={0}
+                    borderColor={bc}
+                    bg='blue.500'
                   >
-                    <Text color={fc}>{data.score.reduce((total, crt) => total + crt, 0)}</Text>
+                    <Text color={fc}>{data.score.reduce((total, n) => total + n, 0)}</Text>
                   </Box>
                 ))}
               </HStack>

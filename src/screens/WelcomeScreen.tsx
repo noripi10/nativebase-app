@@ -1,34 +1,47 @@
-import React from 'react';
+import React, { useRef, createRef, useState } from 'react';
 import {
   Box,
-  Text,
   useColorModeValue,
   useColorMode,
   VStack,
   Button,
-  Stack,
-  Center,
   Badge,
   Heading,
   HStack,
   Spinner,
-  Alert,
+  ScrollView,
+  Input,
+  Checkbox,
 } from 'native-base';
 import { FontAwesome } from '@expo/vector-icons';
 import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StackParamList } from '../navigation/Route';
+import { GestureResponderEvent, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 
 type Props = NativeStackScreenProps<StackParamList, 'welcome'>;
 
 export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const refElements = useRef<React.MutableRefObject<HTMLInputElement | null>[]>([]);
+  for (let i = 0; i <= 3; i++) {
+    refElements.current[i] = createRef<HTMLInputElement>()!;
+  }
   const { colorMode, toggleColorMode } = useColorMode();
   const bg = useColorModeValue('gray.100', 'gray.800');
   const bgButton = useColorModeValue('blue.800', 'red.800');
 
+  const [user1, setUser1] = useState({ userName: '', isActive: false });
+  const [user2, setUser2] = useState({ userName: '', isActive: false });
+  const [user3, setUser3] = useState({ userName: '', isActive: false });
+  const [user4, setUser4] = useState({ userName: '', isActive: false });
   return (
     <>
-      <Box flex={1} bg={bg} justifyContent='flex-start' alignItems='center' safeArea>
+      <ScrollView
+        flex={1}
+        bg={bg}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ alignItems: 'center' }}
+      >
         <Box
           width='90%'
           height={200}
@@ -79,7 +92,100 @@ export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
           <Spinner color={useColorModeValue('gray.900', 'gray.100')} />
           <Spinner color='warning.500' />
         </HStack>
-      </Box>
+        <VStack w='100%'>
+          <HStack justifyContent='center' alignItems='center'>
+            <Input
+              w='70%'
+              ref={refElements.current[0]}
+              value={user1.userName}
+              onChangeText={(userName: string) => {
+                setUser1((prev) => ({ ...prev, userName }));
+              }}
+            />
+            <Checkbox
+              value='green'
+              size='lg'
+              colorScheme='yellow'
+              accessibilityLabel='user1 active check'
+              isChecked={user1.isActive}
+              onChange={(isSelected: boolean) => {
+                setUser1((prev) => ({ ...prev, isActive: isSelected }));
+              }}
+            />
+          </HStack>
+          <HStack justifyContent='center' alignItems='center'>
+            <Input
+              w='70%'
+              ref={refElements.current[0]}
+              value={user2.userName}
+              onChangeText={(userName: string) => {
+                setUser2((prev) => ({ ...prev, userName }));
+              }}
+            />
+            <Checkbox
+              value='green'
+              size='lg'
+              colorScheme='yellow'
+              accessibilityLabel='user1 active check'
+              isChecked={user2.isActive}
+              onChange={(isSelected: boolean) => {
+                setUser2((prev) => ({ ...prev, isActive: isSelected }));
+              }}
+            />
+          </HStack>
+          <HStack justifyContent='center' alignItems='center'>
+            <Input
+              w='70%'
+              ref={refElements.current[0]}
+              value={user3.userName}
+              onChangeText={(userName: string) => {
+                setUser3((prev) => ({ ...prev, userName }));
+              }}
+            />
+            <Checkbox
+              value='green'
+              size='lg'
+              colorScheme='yellow'
+              accessibilityLabel='user1 active check'
+              isChecked={user3.isActive}
+              onChange={(isSelected: boolean) => {
+                setUser3((prev) => ({ ...prev, isActive: isSelected }));
+              }}
+            />
+          </HStack>
+          <HStack justifyContent='center' alignItems='center'>
+            <Input
+              w='70%'
+              ref={refElements.current[0]}
+              value={user4.userName}
+              onChangeText={(userName: string) => {
+                setUser4((prev) => ({ ...prev, userName }));
+              }}
+            />
+            <Checkbox
+              value='green'
+              size='lg'
+              colorScheme='yellow'
+              accessibilityLabel='user1 active check'
+              isChecked={user4.isActive}
+              onChange={(isSelected: boolean) => {
+                setUser4((prev) => ({ ...prev, isActive: isSelected }));
+              }}
+            />
+          </HStack>
+
+          <Button
+            m={3}
+            onPress={(e: GestureResponderEvent) => {
+              e.preventDefault();
+              console.log(user1, user2, user3, user4);
+            }}
+            _pressed={{ bg: 'white' }}
+          >
+            プレーヤー登録
+          </Button>
+        </VStack>
+      </ScrollView>
       <HStack h='120px' justifyContent='center' alignItems='center' bg={useColorModeValue('gray.200', 'gray.900')}>
         <Button onPress={() => navigation.navigate('transition')} mr={2}>
           transition page
