@@ -186,10 +186,18 @@ export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
           </Button>
         </VStack>
       </ScrollView>
-      <HStack h='120px' justifyContent='center' alignItems='center' bg={useColorModeValue('gray.200', 'gray.900')}>
+      <HStack
+        h='120px'
+        justifyContent='center'
+        alignItems='center'
+        bg={useColorModeValue('gray.200', 'gray.900')}
+        flexWrap='wrap'
+        py='3'
+      >
         <Button onPress={() => navigation.navigate('transition')} mr={2}>
           transition page
         </Button>
+        <Button onPress={() => navigation.navigate('keyboard_avoiding')}>keyboard_avoiding</Button>
         <Button onPress={() => navigation.navigate('grid')}>grid page</Button>
       </HStack>
       <ExpoStatusBar style={colorMode === 'dark' ? 'light' : 'dark'} />

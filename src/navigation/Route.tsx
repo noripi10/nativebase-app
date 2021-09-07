@@ -7,11 +7,13 @@ import { TransitionScreen } from '../screens/TransitionScreen';
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { useColorMode } from 'native-base';
 import { GridScreen } from '../screens/GridScreen';
+import KeyboradAvoidingScreen from '../screens/KeyboradAvoidingScreen';
 
 export type StackParamList = {
   welcome: undefined;
   transition: undefined;
   grid: undefined;
+  keyboard_avoiding: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -37,6 +39,7 @@ export const Router: React.VFC = () => {
           <Stack.Screen name='welcome' component={WelcomeScreen} />
           <Stack.Screen name='transition' component={TransitionScreen} />
           <Stack.Screen name='grid' component={GridScreen} />
+          <Stack.Screen name='keyboard_avoiding' component={KeyboradAvoidingScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style={colorMode === 'dark' ? 'light' : 'dark'} />

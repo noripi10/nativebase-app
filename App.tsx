@@ -2,6 +2,7 @@ import React from 'react';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import { Router } from './src/navigation/Route';
 import { AppearanceProvider } from 'react-native-appearance';
+import { AppProvider } from './src/context/AppProvider';
 
 const config = {
   useSystemColorMode: true,
@@ -22,7 +23,9 @@ export default function App() {
   return (
     <AppearanceProvider>
       <NativeBaseProvider theme={theme} config={linearGradientConfig}>
-        <Router />
+        <AppProvider>
+          <Router />
+        </AppProvider>
       </NativeBaseProvider>
     </AppearanceProvider>
   );
