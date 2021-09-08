@@ -1,17 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Center, Box, Text, PresenceTransition, Button, Stack, VStack, useColorModeValue } from 'native-base';
+import { Center, Box, Text, PresenceTransition, Button, useColorModeValue } from 'native-base';
 
 import { StackParamList } from '../navigation/Route';
 
 type Props = NativeStackScreenProps<StackParamList, 'transition'>;
 
-export const TransitionScreen: React.FC<Props> = (props: Props) => {
+export const TransitionScreen: React.FC<Props> = () => {
   const animated = useRef(new Animated.Value(0)).current;
   const [visible, setVisible] = useState(false);
-  const bg = useColorModeValue('gray.300', 'gray.800');
+  const bg = useColorModeValue('gray.300', 'gray.800') as string;
   return (
     <Center flex={1} bgColor='purple.300'>
       <Box flex={1} justifyContent='center' alignItems='center'>

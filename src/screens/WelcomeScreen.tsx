@@ -1,4 +1,4 @@
-import React, { useRef, createRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   useColorModeValue,
@@ -12,23 +12,25 @@ import {
   ScrollView,
   Input,
   Checkbox,
+  Text,
 } from 'native-base';
 import { FontAwesome } from '@expo/vector-icons';
 import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
-import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StackParamList } from '../navigation/Route';
-import { GestureResponderEvent, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
+import { GestureResponderEvent } from 'react-native';
 
 type Props = NativeStackScreenProps<StackParamList, 'welcome'>;
 
 export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
-  const refElements = useRef<React.MutableRefObject<HTMLInputElement | null>[]>([]);
-  for (let i = 0; i <= 3; i++) {
-    refElements.current[i] = createRef<HTMLInputElement>()!;
-  }
+  // const refElements = useRef<React.MutableRefObject<HTMLInputElement | null>[]>([]);
+  // for (let i = 0; i <= 3; i++) {
+  //   refElements.current[i] = createRef<HTMLInputElement>()!;
+  // }
   const { colorMode, toggleColorMode } = useColorMode();
-  const bg = useColorModeValue('gray.100', 'gray.800');
-  const bgButton = useColorModeValue('blue.800', 'red.800');
+  const bg = useColorModeValue('gray.100', 'gray.800') as string;
+  // const bgButton = useColorModeValue('blue.800', 'red.800');
+  const bgS = useColorModeValue('gray.900', 'gray.100') as string;
 
   const [user1, setUser1] = useState({ userName: '', isActive: false });
   const [user2, setUser2] = useState({ userName: '', isActive: false });
@@ -56,7 +58,7 @@ export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
             Card
           </Heading>
           <Badge p={1} borderRadius={4} colorScheme='secondary' width={150}>
-            {`Color Mode : ${colorMode}`}
+            {colorMode && <Text>{`Color Mode : ${colorMode}`}</Text>}
           </Badge>
         </Box>
         <Box
@@ -73,7 +75,7 @@ export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
             Card
           </Heading>
           <Badge p={1} borderRadius={4} colorScheme='teal.900' width={150}>
-            {`Color Mode : ${colorMode}`}
+            {colorMode && <Text>{`Color Mode : ${colorMode}`}</Text>}
           </Badge>
         </Box>
         <VStack justifyContent='center' alignItems='center' mt='8'>
@@ -89,14 +91,14 @@ export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
         <HStack space={2} mt={8}>
           <Spinner color='danger.400' size='large' />
           <Spinner color='blue.500' />
-          <Spinner color={useColorModeValue('gray.900', 'gray.100')} />
+          <Spinner color={bgS} />
           <Spinner color='warning.500' />
         </HStack>
         <VStack w='100%'>
           <HStack justifyContent='center' alignItems='center'>
             <Input
               w='70%'
-              ref={refElements.current[0]}
+              // ref={refElements.current[0]}
               value={user1.userName}
               onChangeText={(userName: string) => {
                 setUser1((prev) => ({ ...prev, userName }));
@@ -116,7 +118,7 @@ export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
           <HStack justifyContent='center' alignItems='center'>
             <Input
               w='70%'
-              ref={refElements.current[0]}
+              // ref={refElements.current[0]}
               value={user2.userName}
               onChangeText={(userName: string) => {
                 setUser2((prev) => ({ ...prev, userName }));
@@ -136,7 +138,7 @@ export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
           <HStack justifyContent='center' alignItems='center'>
             <Input
               w='70%'
-              ref={refElements.current[0]}
+              // ref={refElements.current[0]}
               value={user3.userName}
               onChangeText={(userName: string) => {
                 setUser3((prev) => ({ ...prev, userName }));
@@ -156,7 +158,7 @@ export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
           <HStack justifyContent='center' alignItems='center'>
             <Input
               w='70%'
-              ref={refElements.current[0]}
+              // ref={refElements.current[0]}
               value={user4.userName}
               onChangeText={(userName: string) => {
                 setUser4((prev) => ({ ...prev, userName }));
@@ -178,7 +180,7 @@ export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
             m={3}
             onPress={(e: GestureResponderEvent) => {
               e.preventDefault();
-              console.log(user1, user2, user3, user4);
+              // console.log(user1, user2, user3, user4);
             }}
             _pressed={{ bg: 'white' }}
           >
@@ -186,14 +188,7 @@ export const WelcomeScreen: React.FC<Props> = ({ navigation }: Props) => {
           </Button>
         </VStack>
       </ScrollView>
-      <HStack
-        h='120px'
-        justifyContent='center'
-        alignItems='center'
-        bg={useColorModeValue('gray.200', 'gray.900')}
-        flexWrap='wrap'
-        py='3'
-      >
+      <HStack h='120px' justifyContent='center' alignItems='center' bg={bg} flexWrap='wrap' py='3'>
         <Button onPress={() => navigation.navigate('transition')} mr={2}>
           transition page
         </Button>

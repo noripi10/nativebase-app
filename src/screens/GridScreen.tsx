@@ -14,7 +14,7 @@ import {
 } from 'native-base';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
-import ViewShot, { captureRef } from 'react-native-view-shot';
+import { captureRef } from 'react-native-view-shot';
 import * as ExpoSharing from 'expo-sharing';
 import { KeyboardAccessoryNavigation } from 'react-native-keyboard-accessory';
 
@@ -41,8 +41,8 @@ export const GridScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = useContext(AppContext);
   const mainStackRef = useRef<any>(null);
   const [dataList, setDatalist] = useState<Data[]>(DataList);
-  const bc = useColorModeValue('gray.800', 'gray.100');
-  const fc = useColorModeValue('black', 'white');
+  const bc = useColorModeValue('gray.800', 'gray.100') as string;
+  const fc = useColorModeValue('black', 'white') as string;
   const { width, height } = useWindowDimensions();
   const colWidth = (width * 0.98) / 5;
   const rowHeight = (height * 0.78) / 19;
@@ -70,12 +70,12 @@ export const GridScreen: React.FC<Props> = ({ navigation }) => {
   }, []);
 
   const onScoreChange = useCallback((userID: string, arrayPlace: number, val: string) => {
-    console.log(val, parseInt(val));
+    // console.log(val, parseInt(val));
     let newVal = val.toLowerCase();
     if (!/^\d{1,}$/.test(newVal)) newVal = '0';
     const currentList = dataList.map((data) => {
       if (data.userId === userID) {
-        let tempData = data;
+        const tempData = data;
         tempData.score[arrayPlace] = parseInt(newVal);
       }
       return data;
@@ -117,24 +117,6 @@ export const GridScreen: React.FC<Props> = ({ navigation }) => {
             ))}
           </VStack>
           <VStack justifyContent='flex-start' alignItems='flex-start'>
-            <HStack>
-              {dataList.map((data) => (
-                <Box
-                  key={data.userName}
-                  justifyContent='center'
-                  alignItems='center'
-                  width={colWidth}
-                  height={rowHeight}
-                  borderWidth={StyleSheet.hairlineWidth}
-                  borderLeftWidth={0}
-                  borderBottomWidth={0}
-                  borderColor={bc}
-                  bg='teal.500'
-                >
-                  <Text color={fc}>{data.userName}</Text>
-                </Box>
-              ))}
-            </HStack>
             <KeyboardAvoidingView
               h={{
                 base: '600px',
@@ -142,6 +124,24 @@ export const GridScreen: React.FC<Props> = ({ navigation }) => {
               }}
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
+              <HStack>
+                {dataList.map((data) => (
+                  <Box
+                    key={data.userName}
+                    justifyContent='center'
+                    alignItems='center'
+                    width={colWidth}
+                    height={rowHeight}
+                    borderWidth={StyleSheet.hairlineWidth}
+                    borderLeftWidth={0}
+                    borderBottomWidth={0}
+                    borderColor={bc}
+                    bg='teal.500'
+                  >
+                    <Text color={fc}>{data.userName}</Text>
+                  </Box>
+                ))}
+              </HStack>
               <HStack>
                 {dataList.map(({ userId, userName, score }) => (
                   <VStack key={'scoreList-' + userName} justifyContent='flex-start'>
@@ -198,7 +198,3 @@ export const GridScreen: React.FC<Props> = ({ navigation }) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {},
-});

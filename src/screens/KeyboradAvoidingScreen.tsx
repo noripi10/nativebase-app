@@ -1,23 +1,14 @@
-import React from 'react';
-import {
-  Input,
-  KeyboardAvoidingView,
-  Text,
-  Button,
-  VStack,
-  useBreakpointValue,
-  Center,
-  NativeBaseProvider,
-} from 'native-base';
+import React, { VFC } from 'react';
+import { Input, KeyboardAvoidingView, Text, Button, VStack, useBreakpointValue, Center } from 'native-base';
 import { Platform } from 'react-native';
 
-export const Example = () => {
+export const Example: VFC = () => {
   const isLargeScreen = useBreakpointValue({
     base: false,
     sm: false,
     md: false,
     lg: true,
-  });
+  }) as boolean;
   return (
     <KeyboardAvoidingView
       h={{
@@ -41,10 +32,12 @@ export const Example = () => {
   );
 };
 
-export default () => {
+const KeyBoardView: VFC = () => {
   return (
     <Center flex={1}>
       <Example />
     </Center>
   );
 };
+
+export default KeyBoardView;
